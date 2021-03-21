@@ -51,7 +51,7 @@ namespace oop_dublin_bikes.Controllers
         [HttpPut("id")]
         public async Task<ActionResult> UpdateBike(int id, Bike bike)
         {
-            if (!id.Equals(bike._id) || !_context.Bikes.Any(x => x._id.Equals(id))
+            if (!id.Equals(bike._id) || !_context.Bikes.Any(x => x._id.Equals(id)))
             {
                 return BadRequest();
             }
