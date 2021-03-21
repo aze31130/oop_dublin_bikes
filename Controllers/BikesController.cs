@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using oop_dublin_bikes.Data;
 using oop_dublin_bikes.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,36 @@ namespace oop_dublin_bikes.Controllers
         public BikesController(Context context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Bike>>> GetBikes()
+        {
+            return await _context.Bikes.ToListAsync();
+        }
+        [HttpPost]
+        public async Task<ActionResult<Bike>> Add_Bike(Bike Bike)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var bike = new Bike()
+            {
+                _id = Bike._id,
+                Number = Bike.Number,
+                Name = Bike.Name,
+                Address = Bike.Address,
+                Latitude = Bike.Latitude,
+                Longitude = Bike.Longitude
+            };
+            _context.Bikes.Add(Bike);
+            await _context.SaveChangesAsync();
+
+
+
+            return CreatedAtAction("GetBike", new { id = Bike._id }, Bike);
+
         }
 
         [HttpPut("id")]
