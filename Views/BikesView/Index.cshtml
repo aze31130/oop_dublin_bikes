@@ -1,0 +1,54 @@
+﻿@model oop_dublin_bikes.Models.BikeViewModel;
+<li>@ViewData["Limit"]</li>
+
+<li>@Model.Bikes</li>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Bikes[0]._id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bikes[0].Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bikes[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bikes[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bikes[0].Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bikes[0].Longitude)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model.Bikes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(ModelItem => item._id)
+                </td>
+                <td>
+                    @Html.DisplayFor(ModelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(ModelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(ModelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(ModelItem => item.Latitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(ModelItem => item.Longitude)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -18,13 +18,6 @@ namespace oop_dublin_bikes.Controllers
             _context = context;
         }
 
-        /*
-        public IActionResult Listing(int limit)
-        {
-            return View("biking");
-        }
-        */
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bike>>> GetBikes()
         {
