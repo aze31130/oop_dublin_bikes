@@ -16,3 +16,6 @@ Julien -> Create ReadMe
 
 ## Future Tasks
 Modify and if possible enhance the View files
+
+## PS 
+We know that adding our appseting.json to the git is not a good idea but you need it to connect to our database, it's password will be changed in a little time
