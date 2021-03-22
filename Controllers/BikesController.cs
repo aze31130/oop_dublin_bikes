@@ -17,13 +17,13 @@ namespace oop_dublin_bikes.Controllers
         {
             _context = context;
         }
-        
+
         /*
-        public IActionResult Listing()
+        public IActionResult Listing(int limit)
         {
             return View("biking");
-        }*/
-
+        }
+        */
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bike>>> GetBikes()
@@ -50,9 +50,7 @@ namespace oop_dublin_bikes.Controllers
             _context.bikes.Add(Bike);
             await _context.SaveChangesAsync();
 
-
-
-            return CreatedAtAction("GetBike", new { id = Bike._id }, Bike);
+            return CreatedAtAction("GetBikes", new { id = Bike._id }, Bike);
 
         }
 
