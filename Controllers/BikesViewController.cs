@@ -17,16 +17,7 @@ namespace oop_dublin_bikes.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            BikeViewModel model = new BikeViewModel();
-            model.Bikes = _context.bikes.ToList();
-
-            ViewData["View"] = _context.bikes.ToList();
-            return View(model);
-        }
-
-        public IActionResult List(int limit)
+        public IActionResult Index(int limit)
         {
             if (limit == 0)
             {
@@ -37,7 +28,17 @@ namespace oop_dublin_bikes.Controllers
             model.Bikes = _context.bikes.ToList();
 
             ViewData["View"] = _context.bikes.ToList();
-            return View("biking");
+            return View(model);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            ViewData["Id"] = id;
+            return View("Edit");
         }
     }
 }
