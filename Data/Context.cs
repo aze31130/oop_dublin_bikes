@@ -6,6 +6,6 @@ namespace oop_dublin_bikes.Data
     public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options) : base(options) { }
-        public DbSet<Bike> Bikes { get; set; }
+        public DbSet<Bike> bikes { get; set; }
     }
 }

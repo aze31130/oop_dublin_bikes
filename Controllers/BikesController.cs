@@ -10,19 +10,27 @@ namespace oop_dublin_bikes.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BikesController : ControllerBase
+    public class BikesController : Controller
     {
         private readonly Context _context;
         public BikesController(Context context)
         {
             _context = context;
         }
+        
+        /*
+        public IActionResult Listing()
+        {
+            return View("biking");
+        }*/
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Bike>>> GetBikes()
         {
-            return await _context.Bikes.ToListAsync();
+            return await _context.bikes.ToListAsync();
         }
+
         [HttpPost]
         public async Task<ActionResult<Bike>> Add_Bike(Bike Bike)
         {
@@ -39,7 +47,7 @@ namespace oop_dublin_bikes.Controllers
                 Latitude = Bike.Latitude,
                 Longitude = Bike.Longitude
             };
-            _context.Bikes.Add(Bike);
+            _context.bikes.Add(Bike);
             await _context.SaveChangesAsync();
 
 
@@ -51,7 +59,7 @@ namespace oop_dublin_bikes.Controllers
         [HttpPut("id")]
         public async Task<ActionResult> UpdateBike(int id, Bike bike)
         {
-            if (!id.Equals(bike._id) || !_context.Bikes.Any(x => x._id.Equals(id)))
+            if (!id.Equals(bike._id) || !_context.bikes.Any(x => x._id.Equals(id)))
             {
                 return BadRequest();
             }
@@ -66,14 +74,14 @@ namespace oop_dublin_bikes.Controllers
         [HttpDelete("id")]
         public async Task<ActionResult<Bike>> DeleteBike(int id)
         {
-            var bike = await _context.Bikes.FindAsync(id);
+            var bike = await _context.bikes.FindAsync(id);
             if (bike == null)
             {
                 return NotFound();
             }
             else
             {
-                _context.Bikes.Remove(bike);
+                _context.bikes.Remove(bike);
                 await _context.SaveChangesAsync();
                 return bike;
             }
