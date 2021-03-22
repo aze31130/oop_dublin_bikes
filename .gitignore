@@ -6,7 +6,5 @@ obj
 .vscode
 .DS_Store
 *.db
-*appsettings.JSON
-*appsettings.Development.JSON
 wwwroot
 publish
