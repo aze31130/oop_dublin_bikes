@@ -31,26 +31,17 @@ namespace oop_dublin_bikes.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var bike = new Bike()
-            {
-                _id = Bike._id,
-                Number = Bike.Number,
-                Name = Bike.Name,
-                Address = Bike.Address,
-                Latitude = Bike.Latitude,
-                Longitude = Bike.Longitude
-            };
             _context.bikes.Add(Bike);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBikes", new { id = Bike._id }, Bike);
+            return CreatedAtAction("GetBikes", new { id = Bike.id }, Bike);
 
         }
 
         [HttpPut("id")]
         public async Task<ActionResult> UpdateBike(int id, Bike bike)
         {
-            if (!id.Equals(bike._id) || !_context.bikes.Any(x => x._id.Equals(id)))
+            if (!id.Equals(bike.id) || !_context.bikes.Any(x => x.id.Equals(id)))
             {
                 return BadRequest();
             }
@@ -58,7 +49,7 @@ namespace oop_dublin_bikes.Controllers
             {
                 _context.Entry(bike).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
-                return CreatedAtAction("GetBikes", new { id = bike._id }, bike);
+                return CreatedAtAction("GetBikes", new { id = bike.id }, bike);
             }
         }
 

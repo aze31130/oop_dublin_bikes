@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using oop_dublin_bikes.Data;
 using oop_dublin_bikes.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,28 +16,129 @@ namespace oop_dublin_bikes.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int limit)
+        //Main View
+        public IActionResult Index()
         {
-            if (limit == 0)
-            {
-                limit = 10;
-            }
-            ViewData["Limit"] = limit;
             BikeViewModel model = new BikeViewModel();
             model.Bikes = _context.bikes.ToList();
-
-            ViewData["View"] = _context.bikes.ToList();
             return View(model);
         }
 
-        public IActionResult Edit(int id)
+        //Create View
+        public IActionResult Create()
         {
-            if (id == 0)
+            return View();
+        }
+
+        //Post method to create the bike
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind(
+            "id,Number,Name,Address,Latitude,Longitude,ContractName,Banking,AvailableBikes,AvailableStands,Capacity,Status")] Bike bike)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
+                _context.Add(bike);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(bike);
+        }
+
+        //Edit View
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var bike = _context.bikes.Find(id);
+            if (bike == null)
+            {
+                return NotFound();
             }
             ViewData["Id"] = id;
-            return View("Edit");
+            return View(bike);
+        }
+
+        //Post method to edit a bike
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind(
+            "id,Number,Name,Address,Latitude,Longitude,ContractName,Banking,AvailableBikes,AvailableStands,Capacity,Status")] Bike bike)
+        {
+            if (!id.Equals(bike.id))
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(bike);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!isBikeExist(bike.id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(bike);
+        }
+
+        //Detail View
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            var bike = _context.bikes.FirstOrDefault(x => x.id.Equals(id));
+            if (bike == null)
+            {
+                return NotFound();
+            }
+            return View(bike);
+        }
+
+        //Delete View
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var bike = _context.bikes.FirstOrDefault(x => x.id.Equals(id));
+            if (bike == null)
+            {
+                return NotFound();
+            }
+            return View(bike);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMethod(int id)
+        {
+            var bike = await _context.bikes.FindAsync(id);
+            _context.bikes.Remove(bike);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool isBikeExist(int id)
+        {
+            return _context.bikes.Any(x => x.id.Equals(id));
         }
     }
 }
