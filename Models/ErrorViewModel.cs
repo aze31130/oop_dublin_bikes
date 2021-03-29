@@ -1,5 +1,3 @@
-using System;
-
 namespace oop_dublin_bikes.Models
 {
     public class ErrorViewModel
