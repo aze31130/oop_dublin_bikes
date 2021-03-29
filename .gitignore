@@ -6,5 +6,4 @@ obj
 .vscode
 .DS_Store
 *.db
-wwwroot
 publish
